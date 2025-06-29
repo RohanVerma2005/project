@@ -1,0 +1,178 @@
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import Ingredient from './models/Ingredient.js';  // Adjust path as needed
+
+dotenv.config();
+
+const ingredients = [
+    //Bases
+    { name: 'Old Monk Rum', type: 'base', alcoholContent: 42.8 },
+    { name: 'McDowell’s No.1 Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Royal Stag Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Blenders Pride Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Signature Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Imperial Blue Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Antiquity Blue Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Peter Scot Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Rampur Indian Single Malt', type: 'base', alcoholContent: 45 },
+    { name: 'Amrut Fusion Whisky', type: 'base', alcoholContent: 50 },
+    { name: 'Paul John Brilliance Whisky', type: 'base', alcoholContent: 46 },
+    { name: 'Goa Cashew Feni', type: 'base', alcoholContent: 40 },
+    { name: 'Goa Coconut Feni', type: 'base', alcoholContent: 40 },
+    { name: 'Desi Daru (IMFL)', type: 'base', alcoholContent: 40 },
+    { name: 'Kingfisher Strong Beer', type: 'base', alcoholContent: 8 },
+    { name: 'Haywards 5000', type: 'base', alcoholContent: 7 },
+    { name: 'Knock Out Beer', type: 'base', alcoholContent: 8 },
+    { name: 'Royal Challenge Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Bagpiper Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Officer’s Choice Blue', type: 'base', alcoholContent: 42.8 },
+    { name: 'Black Dog Triple Gold Reserve', type: 'base', alcoholContent: 42.8 },
+    { name: 'Teachers Highland Cream', type: 'base', alcoholContent: 42.8 },
+    { name: 'Rockford Reserve', type: 'base', alcoholContent: 42.8 },
+    { name: '8 PM Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'After Dark Whisky', type: 'base', alcoholContent: 42.8 },
+    { name: 'Bacardi White Rum', type: 'base', alcoholContent: 40 },
+    { name: 'Smirnoff Vodka (India)', type: 'base', alcoholContent: 37.5 },
+    { name: 'Magic Moments Vodka', type: 'base', alcoholContent: 37.5 },
+    { name: 'Romanov Vodka', type: 'base', alcoholContent: 37.5 },
+    { name: 'White Mischief Vodka', type: 'base', alcoholContent: 37.5 },
+    { name: 'Vodka', type: 'base', alcoholContent: 40 },
+    { name: 'Rum', type: 'base', alcoholContent: 37.5 },
+    { name: 'Gin', type: 'base', alcoholContent: 40 },
+    { name: 'Whiskey', type: 'base', alcoholContent: 40 },
+    { name: 'Tequila', type: 'base', alcoholContent: 38 },
+    { name: 'Brandy', type: 'base', alcoholContent: 35 },
+    { name: 'Scotch', type: 'base', alcoholContent: 43 },
+    { name: 'Cognac', type: 'base', alcoholContent: 40 },
+    { name: 'Mezcal', type: 'base', alcoholContent: 40 },
+    { name: 'Absinthe', type: 'base', alcoholContent: 45 },
+    { name: 'Bourbon', type: 'base', alcoholContent: 40 },
+    { name: 'Rye Whiskey', type: 'base', alcoholContent: 46 },
+    { name: 'Ouzo', type: 'base', alcoholContent: 37.5 },
+    { name: 'Sambuca', type: 'base', alcoholContent: 42 },
+    { name: 'Baileys', type: 'base', alcoholContent: 17 },
+    { name: 'Kahlua', type: 'base', alcoholContent: 20 },
+    { name: 'Amaretto', type: 'base', alcoholContent: 28 },
+    { name: 'Campari', type: 'base', alcoholContent: 25 },
+    { name: 'Triple Sec', type: 'base', alcoholContent: 30 },
+    { name: 'Vermouth', type: 'base', alcoholContent: 18 },
+    { name: 'Aperol', type: 'base', alcoholContent: 11 },
+    { name: 'Cachaça', type: 'base', alcoholContent: 40 },
+    { name: 'Soju', type: 'base', alcoholContent: 20 },
+    { name: 'Sake', type: 'base', alcoholContent: 15 },
+    { name: 'Pisco', type: 'base', alcoholContent: 38 },
+    { name: 'Grappa', type: 'base', alcoholContent: 40 },
+    { name: 'Aquavit', type: 'base', alcoholContent: 42 },
+    { name: 'Everclear', type: 'base', alcoholContent: 75.5 },
+    { name: 'Moonshine', type: 'base', alcoholContent: 50 },
+    { name: 'Limoncello', type: 'base', alcoholContent: 30 },
+
+    // 🧃 Mixers
+    { name: 'Thums Up', type: 'mixer', alcoholContent: 0 },
+    { name: 'Limca', type: 'mixer', alcoholContent: 0 },
+    { name: 'Maaza', type: 'mixer', alcoholContent: 0 },
+    { name: 'Slice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Appy Fizz', type: 'mixer', alcoholContent: 0 },
+    { name: 'Bisleri Soda', type: 'mixer', alcoholContent: 0 },
+    { name: 'Kinley Soda', type: 'mixer', alcoholContent: 0 },
+    { name: 'Sprite', type: 'mixer', alcoholContent: 0 },
+    { name: 'Fanta', type: 'mixer', alcoholContent: 0 },
+    { name: 'Nimbooz', type: 'mixer', alcoholContent: 0 },
+    { name: 'Jaljeera', type: 'mixer', alcoholContent: 0 },
+    { name: 'Coconut Water', type: 'mixer', alcoholContent: 0 },
+    { name: 'Sugarcane Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Mint Lemonade', type: 'mixer', alcoholContent: 0 },
+    { name: 'Masala Soda', type: 'mixer', alcoholContent: 0 },
+    { name: 'Lassi (Salty)', type: 'mixer', alcoholContent: 0 },
+    { name: 'Rose Milk', type: 'mixer', alcoholContent: 0 },
+    { name: 'Aam Panna', type: 'mixer', alcoholContent: 0 },
+    { name: 'Buttermilk (Chaas)', type: 'mixer', alcoholContent: 0 },
+    { name: 'Ginger Ale', type: 'mixer', alcoholContent: 0 },
+    { name: 'Kokum Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Cold Coffee', type: 'mixer', alcoholContent: 0 },
+    { name: 'Tender Coconut Pulp Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Khus Sharbat', type: 'mixer', alcoholContent: 0 },
+    { name: 'Rooh Afza Water', type: 'mixer', alcoholContent: 0 },
+    { name: 'Cola', type: 'mixer', alcoholContent: 0 },
+    { name: 'Orange Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Lemonade', type: 'mixer', alcoholContent: 0 },
+    { name: 'Cranberry Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Pineapple Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Tonic Water', type: 'mixer', alcoholContent: 0 },
+    { name: 'Ginger Ale', type: 'mixer', alcoholContent: 0 },
+    { name: 'Club Soda', type: 'mixer', alcoholContent: 0 },
+    { name: 'Coconut Water', type: 'mixer', alcoholContent: 0 },
+    { name: 'Apple Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Grapefruit Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Tomato Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Iced Tea', type: 'mixer', alcoholContent: 0 },
+    { name: 'Lime Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Peach Nectar', type: 'mixer', alcoholContent: 0 },
+    { name: 'Red Bull', type: 'mixer', alcoholContent: 0 },
+    { name: 'Mango Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Soda Water', type: 'mixer', alcoholContent: 0 },
+    { name: 'Sparkling Water', type: 'mixer', alcoholContent: 0 },
+    { name: 'Energy Drink', type: 'mixer', alcoholContent: 0 },
+    { name: 'Cucumber Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Berry Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Passion Fruit Juice', type: 'mixer', alcoholContent: 0 },
+    { name: 'Ginger Beer', type: 'mixer', alcoholContent: 0 },
+    { name: 'Root Beer', type: 'mixer', alcoholContent: 0 },
+    { name: 'Vanilla Soda', type: 'mixer', alcoholContent: 0 },
+    { name: 'Sour Mix', type: 'mixer', alcoholContent: 0 },
+    { name: 'Sweet and Sour Mix', type: 'mixer', alcoholContent: 0 },
+    { name: 'Grenadine', type: 'mixer', alcoholContent: 0 },
+    { name: 'Bubble Tea', type: 'mixer', alcoholContent: 0 },
+
+    // 🍒 Garnishes
+    { name: 'Mint', type: 'garnish', alcoholContent: 0 },
+    { name: 'Lime', type: 'garnish', alcoholContent: 0 },
+    { name: 'Cherry', type: 'garnish', alcoholContent: 0 },
+    { name: 'Orange Slice', type: 'garnish', alcoholContent: 0 },
+    { name: 'Lemon Slice', type: 'garnish', alcoholContent: 0 },
+    { name: 'Cucumber Slice', type: 'garnish', alcoholContent: 0 },
+    { name: 'Pineapple Wedge', type: 'garnish', alcoholContent: 0 },
+    { name: 'Olive', type: 'garnish', alcoholContent: 0 },
+    { name: 'Cinnamon Stick', type: 'garnish', alcoholContent: 0 },
+    { name: 'Basil Leaf', type: 'garnish', alcoholContent: 0 },
+    { name: 'Rosemary Sprig', type: 'garnish', alcoholContent: 0 },
+    { name: 'Chocolate Shavings', type: 'garnish', alcoholContent: 0 },
+    { name: 'Crushed Candy Cane', type: 'garnish', alcoholContent: 0 },
+    { name: 'Star Anise', type: 'garnish', alcoholContent: 0 },
+    { name: 'Sugar Rim', type: 'garnish', alcoholContent: 0 },
+    { name: 'Salt Rim', type: 'garnish', alcoholContent: 0 },
+    { name: 'Lemon Zest', type: 'garnish', alcoholContent: 0 },
+    { name: 'Orange Peel', type: 'garnish', alcoholContent: 0 },
+    { name: 'Edible Flowers', type: 'garnish', alcoholContent: 0 },
+    { name: 'Chili Pepper', type: 'garnish', alcoholContent: 0 },
+    { name: 'Grated Nutmeg', type: 'garnish', alcoholContent: 0 },
+    { name: 'Ginger Slice', type: 'garnish', alcoholContent: 0 },
+    { name: 'Strawberry Slice', type: 'garnish', alcoholContent: 0 },
+    { name: 'Blueberries', type: 'garnish', alcoholContent: 0 },
+    { name: 'Kiwi Slice', type: 'garnish', alcoholContent: 0 },
+    { name: 'Raspberry Skewer', type: 'garnish', alcoholContent: 0 },
+    { name: 'Blackberry Skewer', type: 'garnish', alcoholContent: 0 },
+    { name: 'Apple Fan', type: 'garnish', alcoholContent: 0 },
+    { name: 'Maraschino Cherry', type: 'garnish', alcoholContent: 0 },
+    { name: 'Coconut Flakes', type: 'garnish', alcoholContent: 0 }
+    // Add more ingredients as needed
+];
+
+const seedDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log("Connected to MongoDB for seeding");
+
+        await Ingredient.deleteMany({});  // Clear existing data
+
+        await Ingredient.insertMany(ingredients);
+        console.log("Ingredients seeded successfully!");
+
+        mongoose.disconnect();
+    } catch (err) {
+        console.error("Error seeding ingredients:", err);
+        process.exit(1);
+    }
+};
+
+seedDB();
